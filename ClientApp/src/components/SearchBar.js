@@ -22,7 +22,7 @@ export class SearchBar extends Component {
         
         clearTimeout(this.timeout);
         
-        setTimeout(
+        this.timeout = setTimeout(
             () => this.props.onChange(this.state.searchText, this.state.searchDate), 1000);
     }
 
@@ -30,7 +30,7 @@ export class SearchBar extends Component {
         return (
             <div>
                 <div>
-                    <input type="text" placeholder="Search" onChange={this.textValueChanged}/>
+                    <input type="text" placeholder="Search" onChange={this.textValueChanged} />
                 </div>
                 <div>
                     <label for="publish_date">Data publikacji od: </label>

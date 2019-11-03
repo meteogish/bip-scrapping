@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { fetch2 } from './FetchApi';
+import { fetchAuctionItems } from '../services/AuctionItemsApi';
 import { SearchBar } from './SearchBar';
 
-export class FetchData extends Component {
-  static displayName = FetchData.name;
+export class AuctionItems extends Component {
 
   constructor(props) {
     super(props);
@@ -22,24 +21,17 @@ export class FetchData extends Component {
 
   filterList = async (searchText, searchDate) => {
     this.setState({ loading: true, ...this.state });
-
-    const params = {
-      searchText: searchText,
-      fromDate: searchDate.toISOString().substring(0, 10)
-    };
-
-    const response = await fetch2('auctionItems', {
-      queryParams: params
-    });
-
-    const data = await response.json();
+    console.log('searchtext: ', searchText);
+    
+    const data = await fetchAuctionItems(searchText, searchDate);
+    
     this.setState({ auctionItems: data, loading: false });
   }
 
   render() {
     let mainContent = this.state.loading 
           ? <p><em>Laduje się</em></p>
-          : FetchData.renderAuctionItems(this.state.auctionItems);
+          : AuctionItems.renderAuctionItems(this.state.auctionItems);
 
     return (
       <div>
