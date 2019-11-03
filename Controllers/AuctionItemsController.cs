@@ -33,7 +33,10 @@ namespace BipScrappingApp.Controllers
                 new BipSejmikKielceAuctionItemsProvider()
             };
 
-            var tasks = providers.Select(provider => provider.GetItems(searchText, fromDateParsed, CancellationToken.None)).ToArray();
+            var tasks = providers.Select(provider => 
+                        provider.GetItems(searchText, fromDateParsed, HttpContext.RequestAborted)
+                                .ContinueWith(t => t.IsCompletedSuccessfully ? t.Result : Enumerable.Empty<AuctionItem>()))
+                                .ToArray();
 
             Task.WaitAll(tasks);
 
